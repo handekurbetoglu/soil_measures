@@ -121,20 +121,27 @@ A SHAP summary plot provides an overview of the importance and impact of each fe
 #### 1. Feature Importance:
 
 Y-axis: Lists the features in order of importance. Features at the top are the most important.
+
 Interpretation: The higher a feature is on the y-axis, the greater its overall impact on the model's predictions.
 
 #### 2. Impact on Model Output:
 
 X-axis: Shows the SHAP values. A higher absolute SHAP value indicates a greater impact on the model's prediction.
+
 Interpretation: Positive SHAP values push the model output towards a specific class, while negative SHAP values push it away.
 
 #### 3. Distribution of Impact:
 
 Dots: Each dot represents a SHAP value for a specific feature and instance.
+
 Color: The color of the dots represents the feature value (red for high values, blue for low values).
+
 Interpretation:
+
     Horizontal Spread: The wider the spread of points, the more variable the feature's impact.
+
     Color Gradient: Indicates the relationship between the feature value and its impact. For example, if red dots (high values) are mostly on the right, high feature values increase the prediction.
+
 
 ## 6. SHAP Dependence Plot
 A SHAP dependence plot shows the relationship between a feature and the model's output. It can also highlight interactions with another feature.
@@ -143,20 +150,27 @@ A SHAP dependence plot shows the relationship between a feature and the model's 
 #### 1. Feature Value:
 
 X-axis: Represents the value of the feature being plotted.
+
 Interpretation: Shows how different values of the feature affect the model's prediction.
+
 #### 2. Impact on Model Output:
 
 Y-axis: Shows the SHAP value for the feature, indicating its impact on the model's prediction.
+
 Interpretation: Higher SHAP values mean a stronger positive impact on predicting the specific class.
+
 #### 3. Color Gradient:
 
 Color: Represents the values of another feature (interaction feature).
+
 Interpretation: Helps identify interactions between features. For example, if high values of the interaction feature consistently change the impact of the main feature, there might be an interaction effect.
 
 
 ## 7. How to Run the Analysis
 Prerequisites
+
 Python 3.6 or higher
+
 Required libraries: pandas, scikit-learn, matplotlib, seaborn, xgboost, shap
 
 ### Steps
@@ -167,6 +181,7 @@ crops = pd.read_csv("soil_measures.csv")
 2. Encode the Target Variable:
  
 label_encoder = LabelEncoder()
+
 crops["crop"] = label_encoder.fit_transform(crops["crop"])
 
 3. Split the Data:
