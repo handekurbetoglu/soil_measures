@@ -16,20 +16,27 @@ This project leverages machine learning and SHAP (SHapley Additive exPlanations)
 
 ## 1. Introduction
 Selecting the optimal crop to plant based on soil conditions is a critical decision for farmers aiming to maximize yield and profitability. This project employs advanced machine learning techniques to predict the best crop for given soil conditions, based on a dataset of 22 crops and key soil metrics. By utilizing SHAP (SHapley Additive exPlanations), we can visualize and interpret the contributions of each soil feature to the crop prediction, providing valuable insights for farmers.
+
 ## 2. Dataset
 The dataset, soil_measures.csv, contains the following columns:
 
 "N": Nitrogen content ratio in the soil
+
 "P": Phosphorus content ratio in the soil
+
 "K": Potassium content ratio in the soil
+
 "ph": pH value of the soil
+
 "crop": Categorical values representing various crops (target variable)
+
 
 ## 3. Exploratory Data Analysis (EDA)
 EDA helps us understand the structure and characteristics of the dataset. It involves visualizing the distributions of features and identifying any correlations between them.
 
 
 Steps for EDA:
+
 Load the Dataset:
 
  
@@ -54,20 +61,28 @@ Correlation Heatmap:
 
 
 crops_corr = crops[["N", "P", "K", "ph"]].corr()
+
 sns.heatmap(crops_corr, annot=True)
+
 plt.show()
+
 
 ## 4. Model Selection
 Choosing the right model is crucial for accurate predictions. This project uses an ensemble approach with a VotingClassifier combining:
 
 RandomForestClassifier
+
 GradientBoostingClassifier
+
 XGBClassifier (XGBoost)
+
 DecisionTreeClassifier
+
 
 Steps for Model Selection:
 
 Split the Data:
+
 X_train, X_test, y_train, y_test = train_test_split(
     crops[final_features],
     crops["crop"],
@@ -76,16 +91,24 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 Define and Train the Models:
+
 rf = RandomForestClassifier(random_state=10)
+
 gr = GradientBoostingClassifier(random_state=10)
+
 XGB = XGBClassifier(use_label_encoder=False, eval_metric='mlogloss', random_state=10)
+
 dt = DecisionTreeClassifier(random_state=10)
 
 
 Ensemble VotingClassifier:
+
 vc.fit(X_train, y_train)
+
 vc_pred = vc.predict(X_test)
+
 model_performance_vc = accuracy_score(y_test, vc_pred)
+
 print('Voting Classifier\'s model performance: '  + str(model_performance_vc))
 
 VotingClassifier performed best in these models.
@@ -170,6 +193,7 @@ shap_values = explainer.shap_values(X_test)
 6. Plot SHAP Values for Each Class:
  
 for i in range(len(label_encoder.classes_)):
+
     class_name = label_encoder.classes_[i]
     class_shap_values = shap_values[i]
     shap.summary_plot(class_shap_values, X_test, feature_names=final_features, show=False)
@@ -185,6 +209,7 @@ for i in range(len(label_encoder.classes_)):
 
 ## 8. Interpreting the Results
 Example Interpretation for "Coconut"
+
 P (Phosphorus): High values of P decrease the likelihood of predicting "coconut".
 K (Potassium): The impact is varied, indicating no clear pattern.
 N (Nitrogen): Low values of N decrease the likelihood of predicting "coconut", while high values have mixed effects.
@@ -192,6 +217,7 @@ ph (Soil pH): Low values of ph decrease the likelihood of predicting "coconut".
 
 Conclusion for "Coconut"
 Ideal soil conditions for coconut:
+
 Low phosphorus content.
 Higher nitrogen levels (with some caution).
 Higher pH (less acidic).
